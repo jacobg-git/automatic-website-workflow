@@ -1,12 +1,12 @@
-# Reusable private-repository distribution
+# Reusable distribution and public-access security
 
 ## Decision
 
-The user requested installation of the **current process-worker workflow** into other projects and deferred native subagents until later. They explicitly chose to **keep the existing repository private**:
+The user requested installation of the **current process-worker workflow** into other projects and deferred native subagents until later. It was initially published privately; the latest user request is to **make it public after a security review**:
 
 `https://github.com/jacobg-git/automatic-website-workflow`
 
-The installation entry point for humans and agents is [INSTALL.md](../../INSTALL.md). Git access and model authentication are separate prerequisites; do not collect or embed credentials.
+The installation entry point for humans and agents is [INSTALL.md](../../INSTALL.md). Public HTTPS installation needs no GitHub credentials; model authentication is still separate. Follow [SECURITY.md](../../SECURITY.md), and never collect or embed credentials. Existing release tags/assets are not rewritten merely to change visibility; older archive documentation may still describe the prior private-access requirement.
 
 ## Release layout
 

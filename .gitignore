@@ -24,3 +24,13 @@ __pycache__/
 # Generated client evidence, prompts, model traces, screenshots, and delivery files
 # Kept locally for resume; may contain business/contact information.
 projects/
+.website-workflow/businesses/
+.workflow.lock
+
+# Credentials/certificates must never enter the reusable source repository
+*.pem
+*.key
+*.p12
+*.pfx
+credentials*.json
+service-account*.json

@@ -4,11 +4,11 @@ An installable, local-only workflow for researching a business, planning and bui
 
 **Current execution:** Python launches independent Antigravity `agy` worker conversations. These are **not native parent/child subagents**. Native subagents are deferred until after distribution of this working version.
 
-**Repository visibility:** private. Installing agents need authenticated Git access to `jacobg-git/automatic-website-workflow`; model authentication is separate.
+**Repository visibility:** public. Agents can read this repository and install the pinned release without GitHub credentials. Antigravity/model authentication is still required and remains separate. See [SECURITY.md](SECURITY.md) for security boundaries and private vulnerability reporting.
 
 ## Install into a new project
 
-**Agents: read [INSTALL.md](INSTALL.md) first.** It contains Windows/macOS/Linux commands, private-repository authentication requirements, safe setup, and the exact business-run procedure.
+**Agents: read [INSTALL.md](INSTALL.md) first.** It contains Windows/macOS/Linux commands, public HTTPS installation, prerequisites, safe setup, and the exact business-run procedure.
 
 From a target project, using its Python 3.11+ virtual environment:
 
@@ -24,7 +24,7 @@ Setup preserves existing `AGENTS.md` content, appending one marked pointer to `.
 
 ## Tell your agent
 
-> Install this workflow from the private repository `jacobg-git/automatic-website-workflow` using `INSTALL.md`, without replacing this project's existing instructions. Read the installed guide and run the workflow for **BUSINESS NAME in LOCATION**. Verify the business, existing web presence, facts, and CTA first. Stop before uploading, publishing, or sending anything.
+> Install this workflow from the public repository `jacobg-git/automatic-website-workflow` using `INSTALL.md`, without replacing this project's existing instructions. Read the installed guide and run the workflow for **BUSINESS NAME in LOCATION**. Verify the business, existing web presence, facts, and CTA first. Stop before uploading, publishing, or sending anything.
 
 Any coding agent can operate the CLI, but worker execution currently requires authenticated **Antigravity**. Native Pi/Codex worker adapters are not implemented.
 
@@ -102,6 +102,6 @@ python -m unittest discover -s tests -v
 python -m pip wheel --no-deps --wheel-dir dist .
 ```
 
-Wheels bundle canonical roles, examples, default configuration, and the project guide; they do not depend on this source checkout at runtime. `scripts/check_installed.py` runs with an installed wheel (`python -I scripts/check_installed.py`) and exercises a fresh host, real Chromium, packaging, and cached verification with explicitly simulated model/visual responses and zero inference. [CI passed](https://github.com/jacobg-git/automatic-website-workflow/actions/runs/41338403058) on Linux/Windows with Python 3.11/3.13, including isolated fresh-project wheel verification. Authenticated installation directly from private tag `v0.2.1` was also verified in a fresh environment.
+Wheels bundle canonical roles, examples, default configuration, and the project guide; they do not depend on this source checkout at runtime. `scripts/check_installed.py` runs with an installed wheel (`python -I scripts/check_installed.py`) and exercises a fresh host, real Chromium, packaging, and cached verification with explicitly simulated model/visual responses and zero inference. [CI passed](https://github.com/jacobg-git/automatic-website-workflow/actions/runs/41338403058) on Linux/Windows with Python 3.11/3.13, including isolated fresh-project wheel verification. Installation directly from tag `v0.2.1` was verified in a fresh environment; the repository was initially private and is now public. Client data remains excluded from Git and release assets.
 
 Source-checkout legacy runs under `projects/` remain supported and Git-ignored. See [documentation index](docs/index.md) and [implementation handoff](docs/workflow/implementation-handoff.md).

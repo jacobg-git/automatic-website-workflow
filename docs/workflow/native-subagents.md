@@ -4,7 +4,7 @@
 
 On 2026-11-01 the user clarified that independent `agy` worker processes are not the intended subagent architecture and requested **native subagents as the next implementation milestone**.
 
-**Subsequent user decision:** first distribute the current process-worker workflow as an installable private GitHub package, then return to native subagents. See [distribution status](distribution.md) and [INSTALL.md](../../INSTALL.md). Once distribution is verified, this migration remains the next architecture milestone ahead of broader runtime wrappers or further scheduler expansion. Necessary safety/verification work stays part of migration acceptance, not something to bypass for speed.
+**Subsequent user decision:** first distribute the current process-worker workflow as an installable GitHub package (initially private, now requested public after security review), then return to native subagents. See [distribution status](distribution.md) and [INSTALL.md](../../INSTALL.md). Once distribution is verified, this migration remains the next architecture milestone ahead of broader runtime wrappers or further scheduler expansion. Necessary safety/verification work stays part of migration acceptance, not something to bypass for speed.
 
 **Status: planned, not implemented or tested.** The existing MVP remains a useful working baseline; its pilot and 39 tests do not establish native delegation.
 

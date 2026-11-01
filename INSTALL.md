@@ -2,12 +2,12 @@
 
 **Agent-facing quickstart.** This is the packaged **process-worker** workflow. Native subagents are intentionally deferred. Any coding agent can operate the CLI; worker inference still uses Antigravity `agy`.
 
-Private repository: `https://github.com/jacobg-git/automatic-website-workflow`.
+Public repository: `https://github.com/jacobg-git/automatic-website-workflow`. GitHub authentication is not required to read or install it.
 
 ## 1. Check prerequisites
 
 - Python **3.11+** (and pip/venv).
-- Git with permission to read this **private** GitHub repository. An authenticated browser/MCP session does not necessarily authenticate command-line Git. Use the owner's existing SSH/Git Credential Manager/GitHub CLI setup. If missing, ask the owner to authenticate; never request or embed a token/password in chat, URLs, project files, or logs.
+- Git and public HTTPS access to GitHub. Use the public HTTPS install URL below; do not ask for GitHub credentials or embed any token/password in chat, URLs, project files, or logs.
 - Installed Antigravity CLI with an authenticated model account and sufficient quota. The owner handles authentication. Runtime documentation: <https://antigravity.google/docs/cli/using/>.
 - Network access for package dependencies and the Chromium download.
 
@@ -37,7 +37,7 @@ python3 -m venv .venv
 
 No environment activation is required. Use the same environment's Python for subsequent commands. Do not reinstall into or overwrite an unrelated existing environment blindly.
 
-If HTTPS Git is not configured but approved SSH access is, substitute `git+ssh://git@github.com/jacobg-git/automatic-website-workflow.git@v0.2.1` in the install requirement.
+Prefer HTTPS for credential-free installation. SSH is optional for users who already have approved keys; it is not required for this public repository. Older release archives describe the repository's previous private visibility; this current guide supersedes those authentication notes.
 
 `doctor` makes no model calls and checks browser launch/resources/registrations/executable. It does **not** verify authentication, model entitlements, or quota: check `agy models` separately. Do not silently downgrade model selection.
 
@@ -89,9 +89,9 @@ The installed host configuration is discovered automatically. Model runs consume
 
 ## Suggested user instruction to an agent
 
-> Install the current workflow from the private GitHub repository `jacobg-git/automatic-website-workflow`, following `INSTALL.md`, into this project without replacing its existing instructions. Use the pinned release. Then read the installed guide and run it for **BUSINESS NAME in LOCATION**. Verify its identity, existing web presence, facts, and CTA first; ask only for essential missing information. Stop before any upload, publication, or sending. This is the current Python-managed worker version, not native subagents.
+> Install the current workflow from the public GitHub repository `jacobg-git/automatic-website-workflow`, following `INSTALL.md`, into this project without replacing its existing instructions. Use the pinned release. Then read the installed guide and run it for **BUSINESS NAME in LOCATION**. Verify its identity, existing web presence, facts, and CTA first; ask only for essential missing information. Stop before any upload, publication, or sending. This is the current Python-managed worker version, not native subagents.
 
-The installing agent needs access to the private repository and an already authenticated `agy` account. Other coding-agent runtimes can coordinate this workflow but are not interchangeable worker backends yet.
+The installing agent can read/install the repository anonymously, but still needs an already authenticated `agy` account for model execution. Public source does not grant access to anyone else's account or client data. Other coding-agent runtimes can coordinate this workflow but are not interchangeable worker backends yet.
 
 ## Upgrades and existing runs
 
