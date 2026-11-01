@@ -1,10 +1,20 @@
 name: Test installable workflow
 on:
   push:
+    branches: [main]
+    paths-ignore:
+      - 'docs/**'
+      - 'README.md'
+      - 'INSTALL.md'
+      - 'AGENTS.md'
+      - 'GIT_INIT_REPORT.md'
   pull_request:
   workflow_dispatch:
 permissions:
   contents: read
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   test:
     strategy:

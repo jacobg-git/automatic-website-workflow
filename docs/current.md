@@ -4,7 +4,7 @@
 
 The user requested a reusable GitHub-installable version of the **current process-worker workflow**, explicitly deferred native subagents, and chose to **keep the existing repository private**: `jacobg-git/automatic-website-workflow`.
 
-Version **0.2.0** packages the workflow for installation in new projects. Read [INSTALL.md](../INSTALL.md) for the agent-facing install/run procedure and [distribution details](workflow/distribution.md) for implementation and evidence. Native parent/child delegation is still unimplemented; the [migration plan](workflow/native-subagents.md) follows distribution.
+Version **0.2.0** was published privately and authenticated installation from its GitHub tag passed. Corrective version **0.2.1** preserves that runtime and fixes CI-only test assumptions (missing `agy`, Windows short/long temporary-path aliases). The recommended installation pin is `v0.2.1`; verify its CI/release status below before claiming remote success. Read [INSTALL.md](../INSTALL.md) for the agent-facing install/run procedure and [distribution details](workflow/distribution.md) for implementation and evidence. Native parent/child delegation is still unimplemented; the [migration plan](workflow/native-subagents.md) follows distribution.
 
 ## Implemented Distribution
 
@@ -32,8 +32,8 @@ This baseline uses independent `agy` processes, **not native subagents**. Nothin
 
 ## Next Steps
 
-1. Publish/verify the reviewed source and pinned `v0.2.0` distribution in the existing private origin; do not change visibility or include client data.
-2. Verify authenticated installation from that GitHub tag in a fresh environment and inspect CI status.
+1. Complete remote CI verification of the corrected 0.2.1 tests, then publish the pinned `v0.2.1` distribution without moving the existing v0.2.0 tag.
+2. Verify authenticated installation from v0.2.1 in a fresh environment; keep repository visibility private and client data excluded.
 3. Then return to [native subagent migration](workflow/native-subagents.md), preserving deterministic helpers, receipts, budgets, and approval gates.
 4. Before real-client production, strengthen source corroboration/conflict/negative-claim handling. Empty search results are not proof of nonexistence or registration status.
 5. Additional reliability/QA work remains: graceful pause/cancel, transactional site writes, clearer cost accounting, long-page crops, broader accessibility/performance/cross-browser tests, and actual Pi/Codex worker integrations.

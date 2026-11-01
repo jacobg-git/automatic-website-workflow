@@ -4,7 +4,7 @@
 
 The user authorized autonomous local implementation with minimal questions. Earlier time-boxed pauses are over; work has resumed. **Never launch a duplicate runner.** Start with [current state](../current.md), the actual project `state.json`/lock/processes, then this page.
 
-**Latest user priority: [installable private-repository distribution](distribution.md) of the current process-worker version first; native subagents later.** Version 0.2.0 now bundles runtime assets and provides safe project setup/business-specific commands. Read [INSTALL.md](../../INSTALL.md) for usage. Native parent-controlled orchestration remains planned, not implemented; neither packaging nor the old pilot proves native delegation.
+**Latest user priority: [installable private-repository distribution](distribution.md) of the current process-worker version first; native subagents later.** Version 0.2.0 bundles runtime assets and provides safe project setup/business-specific commands; 0.2.1 corrects CI fixture portability and is the recommended installation pin after verification. Read [INSTALL.md](../../INSTALL.md) for usage. Native parent-controlled orchestration remains planned, not implemented; neither packaging nor the old pilot proves native delegation.
 
 Approval boundaries remain local-only: no uploads, public deployment, email sending, purchases, DNS changes, or expanded credential use without separate explicit approval.
 
@@ -134,7 +134,7 @@ Generated projects, prompts, screenshots, model traces, caches, and package meta
 
 ### First: finish private distribution verification, then native migration
 
-The user deferred native work until after the current version is reusable from GitHub. Verify the private `v0.2.0` installation and CI per [distribution details](distribution.md), then follow [the native migration plan](native-subagents.md) before further scheduler features or broader runtime wrappers. Verify native tools/model selection, update canonical/generated parent instructions and permissions, expose deterministic helpers, record native child IDs/results, then run concurrent child smoke tests and a complete parent-led fictional pilot. Preserve the existing working process mode and its evidence as a labeled baseline, not as native acceptance evidence.
+The user deferred native work until after the current version is reusable from GitHub. Verify the private `v0.2.1` installation and corrected CI per [distribution details](distribution.md), then follow [the native migration plan](native-subagents.md) before further scheduler features or broader runtime wrappers. Verify native tools/model selection, update canonical/generated parent instructions and permissions, expose deterministic helpers, record native child IDs/results, then run concurrent child smoke tests and a complete parent-led fictional pilot. Preserve the existing working process mode and its evidence as a labeled baseline, not as native acceptance evidence.
 
 ### Existing process-based live milestone completed
 

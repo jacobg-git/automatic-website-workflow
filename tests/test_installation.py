@@ -21,7 +21,7 @@ from website_workflow.storage import digest, read_json, write_json
 class InstallationTests(unittest.TestCase):
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory()
-        self.root = Path(self.temporary.name) / "host"
+        self.root = (Path(self.temporary.name) / "host").resolve()
         self.root.mkdir()
     def tearDown(self):
         self.temporary.cleanup()
@@ -191,7 +191,7 @@ class InstallationTests(unittest.TestCase):
         events = [{"event": "init", "init": {"model": config["models"]["researchers"], "agent": "website-researchers"}},
                   {"event": "result", "result": {"status": "SUCCESS", "structured_output": response, "usage": {}}}]
         work = business / "attempt"; work.mkdir()
-        with patch.object(adapter, "_execute", return_value=events) as execute:
+        with patch("website_workflow.adapters.shutil.which", return_value="mock-agy"), patch.object(adapter, "_execute", return_value=events) as execute:
             result, _ = adapter.run("researchers", "fixture prompt", work, "fixture")
         self.assertEqual(result, response)
         self.assertEqual(execute.call_args.args[1], self.root)

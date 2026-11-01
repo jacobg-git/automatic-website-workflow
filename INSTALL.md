@@ -21,7 +21,7 @@ From the **target project**, not this source checkout:
 
 ```powershell
 python -m venv .venv
-.\.venv\Scripts\python.exe -m pip install "local-website-workflow @ git+https://github.com/jacobg-git/automatic-website-workflow.git@v0.2.0"
+.\.venv\Scripts\python.exe -m pip install "local-website-workflow @ git+https://github.com/jacobg-git/automatic-website-workflow.git@v0.2.1"
 .\.venv\Scripts\python.exe -m website_workflow setup --project .
 .\.venv\Scripts\python.exe -m website_workflow doctor --project .
 ```
@@ -30,14 +30,14 @@ python -m venv .venv
 
 ```bash
 python3 -m venv .venv
-./.venv/bin/python -m pip install "local-website-workflow @ git+https://github.com/jacobg-git/automatic-website-workflow.git@v0.2.0"
+./.venv/bin/python -m pip install "local-website-workflow @ git+https://github.com/jacobg-git/automatic-website-workflow.git@v0.2.1"
 ./.venv/bin/python -m website_workflow setup --project .
 ./.venv/bin/python -m website_workflow doctor --project .
 ```
 
 No environment activation is required. Use the same environment's Python for subsequent commands. Do not reinstall into or overwrite an unrelated existing environment blindly.
 
-If HTTPS Git is not configured but approved SSH access is, substitute `git+ssh://git@github.com/jacobg-git/automatic-website-workflow.git@v0.2.0` in the install requirement.
+If HTTPS Git is not configured but approved SSH access is, substitute `git+ssh://git@github.com/jacobg-git/automatic-website-workflow.git@v0.2.1` in the install requirement.
 
 `doctor` makes no model calls and checks browser launch/resources/registrations/executable. It does **not** verify authentication, model entitlements, or quota: check `agy models` separately. Do not silently downgrade model selection.
 

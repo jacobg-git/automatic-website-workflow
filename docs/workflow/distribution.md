@@ -10,7 +10,7 @@ The installation entry point for humans and agents is [INSTALL.md](../../INSTALL
 
 ## Release layout
 
-Version `0.2.0` is a standard installable Python distribution. Pip installs Playwright as a core dependency; the old `[qa]` extra remains a compatibility alias. The build hook copies canonical root role files, examples, and defaults into wheel `_assets/` without maintaining duplicate source copies. Source distributions include those canonical assets so wheels built from sdists work too.
+Version `0.2.0` introduced a standard installable Python distribution. Patch `0.2.1` retains the same runtime, corrects environment-dependent test fixtures for missing `agy` and Windows temporary-path aliases, and becomes the recommended install pin once verified. Pip installs Playwright as a core dependency; the old `[qa]` extra remains a compatibility alias. The build hook copies canonical root role files, examples, and defaults into wheel `_assets/` without maintaining duplicate source copies. Source distributions include those canonical assets so wheels built from sdists work too.
 
 `resource_path` locates wheel assets or canonical source assets. Runtime operations no longer require executing from this development checkout or writing into site-packages.
 
@@ -45,6 +45,6 @@ Business output lives under `.website-workflow/businesses/` and is Git-ignored. 
 
 ## Publishing and future changes
 
-Publish reviewed source to the existing private origin and use a pinned `v0.2.0` tag for reproducible installs. Do not publish generated business projects, model traces, test virtual environments, caches, credentials, or client ZIPs. GitHub release/package files, if attached, must contain only the workflow distribution, not generated client deliverables.
+Version `v0.2.0` was published to the existing private origin and authenticated GitHub-tag installation passed in a fresh environment. Its first CI run exposed test-fixture assumptions, not an installed runtime failure. Publish the corrected `v0.2.1` after verifying the matrix; do not move the original release tag. Do not publish generated business projects, model traces, test virtual environments, caches, credentials, or client ZIPs. GitHub release/package files, if attached, must contain only the workflow distribution, not generated client deliverables.
 
 After distribution verification, the next architecture milestone remains [native subagent migration](native-subagents.md). Additional factual corroboration is required before real-client production use. Role/model/contract upgrades can invalidate in-flight task fingerprints; retain an older environment for old runs rather than resetting their counters or silently rewriting evidence.

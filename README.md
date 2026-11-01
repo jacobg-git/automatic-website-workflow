@@ -13,7 +13,7 @@ An installable, local-only workflow for researching a business, planning and bui
 From a target project, using its Python 3.11+ virtual environment:
 
 ```bash
-python -m pip install "local-website-workflow @ git+https://github.com/jacobg-git/automatic-website-workflow.git@v0.2.0"
+python -m pip install "local-website-workflow @ git+https://github.com/jacobg-git/automatic-website-workflow.git@v0.2.1"
 python -m website_workflow setup --project .
 python -m website_workflow doctor --project .
 ```
