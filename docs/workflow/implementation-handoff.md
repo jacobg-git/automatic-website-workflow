@@ -117,7 +117,7 @@ A separate earlier Flash smoke read a test image, identified `VISUAL CHECKPOINT 
 
 ## Validation
 
-The original 39-test workflow suite passed with real Chromium. Distribution expands the current suite to **59 tests: 58 passing and one privileged real-symlink test skipped on Windows**, with a separate simulated link-guard case passing. Isolated wheel/sdist installation and a fresh-host real-browser pipeline with test-double models also passed; see [distribution evidence](distribution.md). Coverage includes a complete engine run with real Chromium and test-double models, interaction success/failure, network blocking, exact lowercase SiteGround entry filename, non-portable Windows paths, missing/wrong image receipts, large-source compact handoffs, cache migration, next-day resume, bounded retries/budgets, lock behavior, and package/site tampering.
+The original 39-test workflow suite passed with real Chromium. Distribution and resume hardening expand the current suite to **60 tests: 59 passing and one privileged real-symlink test skipped on Windows**, with a separate simulated link-guard case passing. Isolated wheel/sdist installation and a fresh-host real-browser pipeline with test-double models also passed; see [distribution evidence](distribution.md). Coverage includes a complete engine run with real Chromium and test-double models, interaction success/failure, network blocking, exact lowercase SiteGround entry filename, non-portable Windows paths, missing/wrong image receipts, large-source compact handoffs, cache migration, next-day resume, mid-correction-cycle resume without re-screenshotting completed review cycles, bounded retries/budgets, lock behavior, and package/site tampering.
 
 ```bash
 python -m unittest discover -s tests -v

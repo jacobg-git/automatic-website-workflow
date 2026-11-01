@@ -18,7 +18,7 @@ The repository is now **PUBLIC**, as explicitly requested after a pre-publicatio
 
 ## Validation
 
-- **59 tests executed: 58 passed, one real-symlink case skipped on Windows due to missing privileges.** A simulated link-guard test passes; CI can exercise the real case on Linux.
+- **60 tests executed: 59 passed, one real-symlink case skipped on Windows due to missing privileges.** A simulated link-guard test passes; CI can exercise the real case on Linux. Resuming a run after a completed correction cycle now reuses verified `qa/cycle-{cycle}.json` browser results and screenshot hashes instead of re-rendering screenshots and invalidating completed `review-{cycle}` prompt fingerprints.
 - Built wheel and sdist, including a wheel rebuilt from sdist.
 - Installed into a fresh virtual environment outside the checkout, with dependencies resolved independently (Playwright 1.64.1 / Chromium 156.0.8078.4).
 - Isolated installed-wheel test preserved host instructions, ran setup/doctor and business scaffolding, then completed real Chromium screenshots, ZIP packaging, and a no-inference completed rerun using explicitly simulated model/visual results. No new paid inference was used for distribution validation.

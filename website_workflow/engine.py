@@ -190,6 +190,21 @@ class Engine:
             raise WorkflowError(f"Cached research task {task_id} has no valid request date")
         return date
 
+    def _browser_qa(self, site, plan, cycle, audit):
+        if not audit["passed"]:
+            return {"passed": False, "errors": ["Browser checks skipped because static gate failed"], "screenshots": []}
+        qa_path = self.project / "qa" / f"cycle-{cycle}.json"
+        review_task = self.state["tasks"].get(f"review-{cycle}", {})
+        if review_task.get("status") == "complete" and qa_path.is_file():
+            cached = read_json(qa_path)
+            browser = cached.get("browser", {})
+            shots = browser.get("screenshots")
+            receipts = review_task.get("usage", {}).get("viewed_images", {})
+            if (cached.get("static") == audit and isinstance(shots, list) and shots and
+                    all(Path(p).is_file() and receipts.get(image_key(p)) == digest(Path(p).read_bytes()) for p in shots)):
+                return browser
+        return browser_audit(site, plan, self.project / "qa" / f"cycle-{cycle}")
+
     def _pipeline(self, intake):
         self.event("Local-only workflow started/resumed; upload, publish, and send remain disabled")
         jobs = [("business", {"assignment": "business", "intake": intake, "today": self._research_date("business")})]
@@ -233,8 +248,7 @@ class Engine:
             self._apply_build(build)
             site = self.project / "site"
             audit = static_audit(site, plan)
-            browser = browser_audit(site, plan, self.project / "qa" / f"cycle-{cycle}") if audit["passed"] else {
-                "passed": False, "errors": ["Browser checks skipped because static gate failed"], "screenshots": []}
+            browser = self._browser_qa(site, plan, cycle, audit)
             qa = {"cycle": cycle, "static": audit, "browser": browser}
             if self.config["require_visual_review"] and browser["screenshots"]:
                 screenshot_hashes = {image_key(path): digest(Path(path).read_bytes()) for path in browser["screenshots"]}

@@ -347,6 +347,39 @@ class EngineTests(unittest.TestCase):
         self.assertIn("fix-1", fake.calls)
         self.assertTrue(read_json(self.project / "qa" / "cycle-1.json")["passed"])
 
+    def test_resume_after_correction_cycle_preserves_completed_qa_screenshots(self):
+        renders = {"count": 0}
+        def varying_browser(site, plan_value, output):
+            renders["count"] += 1
+            output = Path(output); output.mkdir(parents=True, exist_ok=True)
+            screenshots = []
+            for width in (390, 768, 1440):
+                image = output / f"fixture-{width}.png"
+                image.write_bytes(f"\x89PNG\r\n\x1a\nRENDER-{renders['count']}-{width}".encode("latin1"))
+                screenshots.append(str(image.resolve()))
+            return {"passed": True, "errors": [], "screenshots": screenshots, "checks": []}
+
+        class ReviseFirstReview(FakeAdapter):
+            def run(self, role, prompt, workdir, task_id):
+                result, usage = super().run(role, prompt, workdir, task_id)
+                if task_id == "review-0":
+                    result["verdict"] = "revise"
+                    result["issues"] = [{"severity": "major", "description": "Adjust spacing", "fix": "Tighten header padding"}]
+                return result, usage
+
+        fake = ReviseFirstReview()
+        self.config["max_total_tokens"] = 60  # Allows business, competitor-1, plan, build, review-0, fix-1 (6 * 10 = 60), then stops before review-1
+        with patch("website_workflow.engine.browser_audit", varying_browser):
+            with self.assertRaisesRegex(WorkflowError, "budget exhausted"):
+                Engine(self.project, self.config, fake).run()
+            self.assertEqual(renders["count"], 2)  # cycle-0 and cycle-1 rendered once
+            self.config["max_total_tokens"] = 500
+            state = Engine(self.project, self.config, fake).run()
+        self.assertEqual(state["status"], "awaiting_approval")
+        self.assertEqual(fake.calls.count("review-0"), 1)
+        self.assertEqual(fake.calls.count("fix-1"), 1)
+        self.assertEqual(fake.calls.count("review-1"), 1)
+
     def test_large_source_bundle_uses_compact_revision_handoff(self):
         class LargeSource(FakeAdapter):
             def run(self, role, prompt, workdir, task_id):
