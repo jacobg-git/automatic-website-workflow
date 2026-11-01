@@ -102,6 +102,6 @@ python -m unittest discover -s tests -v
 python -m pip wheel --no-deps --wheel-dir dist .
 ```
 
-Wheels bundle canonical roles, examples, default configuration, and the project guide; they do not depend on this source checkout at runtime. `scripts/check_installed.py` runs with an installed wheel (`python -I scripts/check_installed.py`) and exercises a fresh host, real Chromium, packaging, and cached verification with explicitly simulated model/visual responses and zero inference. CI is configured to build and test on Linux/Windows with Python 3.11/3.13; check the actual run status before claiming a remote pass.
+Wheels bundle canonical roles, examples, default configuration, and the project guide; they do not depend on this source checkout at runtime. `scripts/check_installed.py` runs with an installed wheel (`python -I scripts/check_installed.py`) and exercises a fresh host, real Chromium, packaging, and cached verification with explicitly simulated model/visual responses and zero inference. [CI passed](https://github.com/jacobg-git/automatic-website-workflow/actions/runs/41338403058) on Linux/Windows with Python 3.11/3.13, including isolated fresh-project wheel verification. Authenticated installation directly from private tag `v0.2.1` was also verified in a fresh environment.
 
 Source-checkout legacy runs under `projects/` remain supported and Git-ignored. See [documentation index](docs/index.md) and [implementation handoff](docs/workflow/implementation-handoff.md).

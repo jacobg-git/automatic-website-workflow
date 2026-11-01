@@ -4,7 +4,7 @@
 
 The user requested a reusable GitHub-installable version of the **current process-worker workflow**, explicitly deferred native subagents, and chose to **keep the existing repository private**: `jacobg-git/automatic-website-workflow`.
 
-Version **0.2.0** was published privately and authenticated installation from its GitHub tag passed. Corrective version **0.2.1** preserves that runtime and fixes CI-only test assumptions (missing `agy`, Windows short/long temporary-path aliases). The recommended installation pin is `v0.2.1`; verify its CI/release status below before claiming remote success. Read [INSTALL.md](../INSTALL.md) for the agent-facing install/run procedure and [distribution details](workflow/distribution.md) for implementation and evidence. Native parent/child delegation is still unimplemented; the [migration plan](workflow/native-subagents.md) follows distribution.
+**Version 0.2.1 is published and verified** at the private [GitHub release](https://github.com/jacobg-git/automatic-website-workflow/releases/tag/v0.2.1). Authenticated installation directly from its GitHub tag passed in a fresh environment. It preserves the 0.2.0 runtime and fixes CI-only test assumptions (missing `agy`, Windows short/long temporary-path aliases). The original v0.2.0 tag was not moved. Read [INSTALL.md](../INSTALL.md) for the agent-facing install/run procedure and [distribution details](workflow/distribution.md) for implementation and evidence. Native parent/child delegation is still unimplemented; the [migration plan](workflow/native-subagents.md) follows distribution.
 
 ## Implemented Distribution
 
@@ -22,7 +22,8 @@ Version **0.2.0** was published privately and authenticated installation from it
 - Built wheel and sdist, including a wheel rebuilt from sdist.
 - Installed into a fresh virtual environment outside the checkout, with dependencies resolved independently (Playwright 1.64.1 / Chromium 156.0.8078.4).
 - Isolated installed-wheel test preserved host instructions, ran setup/doctor and business scaffolding, then completed real Chromium screenshots, ZIP packaging, and a no-inference completed rerun using explicitly simulated model/visual results. No new paid inference was used for distribution validation.
-- GitHub Actions is configured for Linux/Windows and Python 3.11/3.13; inspect remote run status before claiming CI success.
+- [GitHub Actions run 41338403058](https://github.com/jacobg-git/automatic-website-workflow/actions/runs/41338403058) passed all four Linux/Windows × Python 3.11/3.13 jobs, including isolated fresh-project wheel tests. It tested release source commit `65bc431`.
+- Final authenticated `pip install` from `v0.2.1`, followed by isolated fresh-host setup/browser/delivery checks, passed with zero model calls. Repository visibility remains PRIVATE; only workflow distribution assets were attached.
 
 ## Existing Live Baseline
 
@@ -32,11 +33,10 @@ This baseline uses independent `agy` processes, **not native subagents**. Nothin
 
 ## Next Steps
 
-1. Complete remote CI verification of the corrected 0.2.1 tests, then publish the pinned `v0.2.1` distribution without moving the existing v0.2.0 tag.
-2. Verify authenticated installation from v0.2.1 in a fresh environment; keep repository visibility private and client data excluded.
-3. Then return to [native subagent migration](workflow/native-subagents.md), preserving deterministic helpers, receipts, budgets, and approval gates.
-4. Before real-client production, strengthen source corroboration/conflict/negative-claim handling. Empty search results are not proof of nonexistence or registration status.
-5. Additional reliability/QA work remains: graceful pause/cancel, transactional site writes, clearer cost accounting, long-page crops, broader accessibility/performance/cross-browser tests, and actual Pi/Codex worker integrations.
+1. Use [INSTALL.md](../INSTALL.md) to install the pinned private release in target projects and operate it for named businesses; keep client data excluded and stop locally for approval.
+2. When requested, return to [native subagent migration](workflow/native-subagents.md), preserving deterministic helpers, receipts, budgets, and approval gates. This release remains process-worker execution.
+3. Before real-client production, strengthen source corroboration/conflict/negative-claim handling. Empty search results are not proof of nonexistence or registration status.
+4. Additional reliability/QA work remains: graceful pause/cancel, transactional site writes, clearer cost accounting, long-page crops, broader accessibility/performance/cross-browser tests, and actual Pi/Codex worker integrations. CI also reports non-failing deprecated Node 20 action warnings to address in maintenance.
 
 ## Approval Boundary
 
