@@ -2,7 +2,7 @@
 
 ## Current Priority and Status
 
-The user requested a reusable GitHub-installable version of the **current process-worker workflow**, explicitly deferred native subagents, and subsequently requested **public repository access after a security review**: `jacobg-git/automatic-website-workflow`.
+The repository is now **PUBLIC**, as explicitly requested after a pre-publication security review: `https://github.com/jacobg-git/automatic-website-workflow`. Anonymous access to `INSTALL.md` and credential-free Git/pip installation from v0.2.1 were verified. Native subagents remain deferred; this is the current process-worker workflow.
 
 **Version 0.2.1 is published and verified** at the [GitHub release](https://github.com/jacobg-git/automatic-website-workflow/releases/tag/v0.2.1). Authenticated installation directly from its GitHub tag passed in a fresh environment. It preserves the 0.2.0 runtime and fixes CI-only test assumptions (missing `agy`, Windows short/long temporary-path aliases). The original v0.2.0 tag was not moved. Read [INSTALL.md](../INSTALL.md) for the agent-facing install/run procedure and [distribution details](workflow/distribution.md) for implementation and evidence. Native parent/child delegation is still unimplemented; the [migration plan](workflow/native-subagents.md) follows distribution.
 
@@ -23,7 +23,15 @@ The user requested a reusable GitHub-installable version of the **current proces
 - Installed into a fresh virtual environment outside the checkout, with dependencies resolved independently (Playwright 1.64.1 / Chromium 156.0.8078.4).
 - Isolated installed-wheel test preserved host instructions, ran setup/doctor and business scaffolding, then completed real Chromium screenshots, ZIP packaging, and a no-inference completed rerun using explicitly simulated model/visual results. No new paid inference was used for distribution validation.
 - [GitHub Actions run 41338403058](https://github.com/jacobg-git/automatic-website-workflow/actions/runs/41338403058) passed all four Linux/Windows × Python 3.11/3.13 jobs, including isolated fresh-project wheel tests. It tested release source commit `65bc431`.
-- Final authenticated `pip install` from `v0.2.1`, followed by isolated fresh-host setup/browser/delivery checks, passed with zero model calls. That verification occurred while the repository was private; only workflow distribution assets were attached. The latest user request makes public access the target, with client data still excluded.
+- Final authenticated `pip install` from `v0.2.1`, followed by isolated fresh-host setup/browser/delivery checks, passed with zero model calls. That verification occurred while the repository was private; only workflow distribution assets were attached. Public access is now verified, with client data still excluded.
+
+## Public-Access Security
+
+- Gitleaks 8.30.1 found no secrets in every pre-existing commit and both releases' extracted wheel/sdist archives. Historical file inventories contain no generated business/client artifacts. The subsequent hardened commit was also scanned with no detections.
+- GitHub secret scanning, secret push protection, dependency alerts, and private vulnerability reporting are enabled. External-fork workflow runs require approval from all external contributors; repository workflow tokens are read-only and cannot approve PRs. Auto-merge is disabled.
+- CI actions are pinned by commit, checkout credentials are not persisted, checksum-verified/redacted history secret scanning runs in CI, and Dependabot proposes (never auto-merges) dependency changes.
+- [Hardened-main tests](https://github.com/jacobg-git/automatic-website-workflow/actions/runs/41339825856) and [history secret scan](https://github.com/jacobg-git/automatic-website-workflow/actions/runs/41339825881) passed. Dependabot PRs are separate unmerged proposals; their queued checks do not change main.
+- No Git history/release tags were rewritten. Historical local filesystem paths and GitHub noreply author metadata remain; this is not a fully anonymized repository or an absolute security guarantee. See [SECURITY.md](../SECURITY.md).
 
 ## Existing Live Baseline
 

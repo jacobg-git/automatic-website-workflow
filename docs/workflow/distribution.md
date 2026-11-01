@@ -2,11 +2,17 @@
 
 ## Decision
 
-The user requested installation of the **current process-worker workflow** into other projects and deferred native subagents until later. It was initially published privately; the latest user request is to **make it public after a security review**:
+The user requested installation of the **current process-worker workflow** into other projects and deferred native subagents until later. It was initially published privately and is now **public after the user-requested security review**:
 
 `https://github.com/jacobg-git/automatic-website-workflow`
 
 The installation entry point for humans and agents is [INSTALL.md](../../INSTALL.md). Public HTTPS installation needs no GitHub credentials; model authentication is still separate. Follow [SECURITY.md](../../SECURITY.md), and never collect or embed credentials. Existing release tags/assets are not rewritten merely to change visibility; older archive documentation may still describe the prior private-access requirement.
+
+## Public verification and safeguards
+
+Anonymous HTTPS read of current `INSTALL.md` returned 200, and a forced, uncached v0.2.1 Git/pip install succeeded with GitHub token variables removed, Git credential helpers/extra headers disabled, and interactive prompts disabled. No GitHub credentials are needed; model authentication remains separate.
+
+The audit covered all pre-existing Git history plus extracted wheel/sdist assets from both releases, with no secret detections and no historical client-artifact paths. Read-only CI, pinned actions, no persisted checkout credentials, checksum-verified redacted history scans, dependency alerts/PRs, GitHub secret scanning/push protection, private vulnerability reporting, and approval for all external-fork contributors are in place. Auto-merge is disabled. Source-main regression CI and the new history-scan CI passed. Limits and retained historical workstation metadata are documented in [SECURITY.md](../../SECURITY.md); no absolute security guarantee is claimed.
 
 ## Release layout
 
