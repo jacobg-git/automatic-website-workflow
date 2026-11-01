@@ -20,7 +20,9 @@ This index lists the folders under `docs/`, explains what belongs in each folder
 
 ## Folders
 
-- [raw/](raw/) — Immutable source material. Includes [Karpathy: LLM Wiki](raw/karpathy-llm-wiki.md), the base source for how this wiki should work.
+- [raw/](raw/) — Immutable source material, including [Karpathy: LLM Wiki](raw/karpathy-llm-wiki.md) and [local Antigravity CLI inspection](raw/antigravity-cli-inspection-2026-10-31.md).
+- [workflow/](workflow/) — Requirements, architecture, role ownership, approval boundaries, and implementation progress. Start with the [workflow overview](workflow/overview.md) and [continuation handoff](workflow/implementation-handoff.md).
+- [research/](research/) — Source-backed capability investigations and implementation caveats. Start with [Antigravity feasibility](research/antigravity-feasibility.md).
 
 ## Folder entry format
 

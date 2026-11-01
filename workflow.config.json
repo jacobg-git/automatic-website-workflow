@@ -1,0 +1,21 @@
+{
+  "adapter": "antigravity",
+  "executable": "agy",
+  "models": {
+    "researchers": "gemini-3.8-flash-low",
+    "planner": "gemini-4-argon-medium",
+    "builder": "gemini-4-argon-high",
+    "reviewer": "gemini-4-argon-medium",
+    "outreach": "gemini-3.8-flash-low"
+  },
+  "concurrency": 3,
+  "max_competitors": 3,
+  "max_fix_cycles": 2,
+  "max_calls": 24,
+  "max_total_tokens": 500000,
+  "task_timeout_seconds": 300,
+  "max_prompt_chars": 70000,
+  "max_stream_bytes": 3000000,
+  "require_browser": true,
+  "require_visual_review": true
+}

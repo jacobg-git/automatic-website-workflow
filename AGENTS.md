@@ -20,6 +20,17 @@ git commit -m "Add responsive mobile navigation"
 
 ---
 
+# Project Workflow and Role Ownership
+
+- Read `docs/workflow/overview.md` for requirements and approval boundaries. Before continuing implementation, read `docs/workflow/implementation-handoff.md` for exact progress, live test findings, paused pilot state, known gaps, and next commands. `docs/research/antigravity-feasibility.md` is the earlier capability investigation.
+- The orchestrator is the user-facing coordinator and sole maintainer of shared wiki documentation and workflow state. The wiki-maintenance rules below apply to it.
+- Delegated workers write only assigned task artifacts and report durable findings to the orchestrator; they must not edit shared wiki/state unless the user explicitly changes this ownership policy.
+- Version 1 stops after local research, planning, building, testing, deployment packaging, and outreach drafting. Any preview upload, public deployment, email sending, purchase, or expanded credential use requires explicit user approval.
+- Do not assume nested role `AGENTS.md` files activate automatically. Antigravity root-started sessions require explicit role loading or native agent registrations.
+- The first full live Antigravity local demo passed on 2026-11-01 after two correction cycles, with 39 passing automated tests. Its state is `awaiting_approval`; nothing was uploaded or sent. Inspect actual state/processes before launching work. Do not equate a fictional pilot or test-double success with arbitrary-client production readiness, complete source corroboration, or tested native Pi/Codex support.
+
+---
+
 # LLM Wiki Rules
 
 ## What this wiki is

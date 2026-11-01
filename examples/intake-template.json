@@ -1,0 +1,11 @@
+{
+  "slug": "replace-with-business-slug",
+  "business_name": "REPLACE: verified business name",
+  "location": "REPLACE: city, region, country",
+  "description": "REPLACE: identity, service type, and known context; do not invent facts",
+  "verified_facts": ["REPLACE: one fact explicitly verified by the operator"],
+  "primary_cta": {"label": "REPLACE: useful action", "href": "#contact", "verified": false},
+  "source_urls": [],
+  "competitors": [],
+  "demo": false
+}

@@ -14,3 +14,13 @@ tmp/
 temp/
 .DS_Store
 Thumbs.db
+
+# Python caches and local environments
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+
+# Generated client evidence, prompts, model traces, screenshots, and delivery files
+# Kept locally for resume; may contain business/contact information.
+projects/

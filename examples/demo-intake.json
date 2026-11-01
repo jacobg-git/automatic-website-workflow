@@ -1,0 +1,23 @@
+{
+  "slug": "juniper-cycle-demo",
+  "business_name": "Juniper Cycle Workshop — Fictional Demo",
+  "location": "Portland, Oregon (fictional demonstration, not a real business)",
+  "description": "An explicitly fictional independent bicycle repair workshop used to test the local website workflow. Do not present it as a real company or attribute online findings to it.",
+  "verified_facts": [
+    "Juniper Cycle Workshop is a fictional demonstration business, not a real company.",
+    "The demo concept is an independent bicycle repair workshop in Portland, Oregon.",
+    "The demo service concept includes bicycle tune-ups, flat-tire repairs, and brake adjustments.",
+    "No real address, telephone number, booking service, prices, opening hours, or customer testimonials are supplied."
+  ],
+  "primary_cta": {
+    "label": "Explore the workshop concept",
+    "href": "#contact",
+    "verified": true
+  },
+  "source_urls": [],
+  "competitors": [
+    {"name": "REI bicycle shop service presentation", "url": "https://www.rei.com/stores/bike-shop"},
+    {"name": "Trek bicycle service presentation", "url": "https://www.trekbikes.com/us/en_US/service/"}
+  ],
+  "demo": true
+}
