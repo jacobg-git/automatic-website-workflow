@@ -37,7 +37,7 @@ Workers produce task artifacts. Only the orchestrator maintains the shared wiki/
 
 ## Architecture and implementation status
 
-The Python pipeline passed its first complete live local fictional pilot on 2026-11-01. Real-client research hardening and native Pi/Codex integrations remain incomplete. See the [implementation handoff](implementation-handoff.md) for exact files, test evidence, and continuation commands. Keep a portable workflow specification separate from runtime adapters. Markdown instructions alone do not schedule workers, select models, enforce permissions, or provide browser tools.
+The Python-managed, independent CLI-worker pipeline passed its first complete local fictional pilot on 2026-11-01. It does not use actual native parent/child subagent delegation. The latest user decision is to [distribute the current version privately for installation in new projects](distribution.md) first, then undertake [native subagent migration](native-subagents.md): a conversational parent invokes and coordinates real native children; Python remains for deterministic validation, QA, persistence, and packaging. Native migration, real-client research hardening, and native Pi/Codex integrations remain incomplete. See the [implementation handoff](implementation-handoff.md) for exact files, test evidence, and continuation commands. Keep a portable workflow specification separate from runtime adapters. Markdown instructions alone do not schedule workers, select models, enforce permissions, or provide browser tools.
 
 Current locations:
 
@@ -72,6 +72,6 @@ Initial defaults now use JSON intake, a fictional bicycle-workshop pilot, plain 
 
 ## Next steps
 
-Review the completed local fictional pilot, then harden source corroboration, cancellation, transactional writes, and broader QA as listed in the [implementation handoff](implementation-handoff.md). Native Pi/Codex wrappers and real-client intake follow; no uploading or sending is approved.
+First finish private distribution/reusable-project validation per [INSTALL.md](../../INSTALL.md) and [distribution details](distribution.md). Then implement and verify [native parent-controlled subagents](native-subagents.md), reusing the current roles/contracts and deterministic Python helpers. Retain the existing process-based MVP as a labeled baseline. Research/reliability hardening, broader QA, native Pi/Codex support, and real-client intake follow; no uploading or sending is approved.
 
 See [Antigravity feasibility research](../research/antigravity-feasibility.md) and [current state](../current.md).

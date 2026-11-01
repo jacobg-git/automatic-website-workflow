@@ -53,3 +53,17 @@ Append-only chronological log of meaningful wiki mutations. Do not rewrite previ
 - Source: User request to explain the workflow and commit the work.
 - Updated: [current state](current.md) and [implementation handoff](workflow/implementation-handoff.md).
 - Summary: Defined the local commit as the completed, tested Antigravity MVP, including source, role instructions/registrations, examples/configuration, tests, and documentation. Generated client projects, traces, ZIPs, caches, credentials, and secrets remain excluded. Remaining production-hardening and native Pi/Codex work is explicitly outside the completed milestone; no push or deployment was requested.
+
+## [2026-11-01] docs | Prioritize native parent-controlled subagents
+
+- Source: User clarification that independent CLI workers are not native subagents, followed by an explicit request to make native subagents the next step.
+- Created: [native subagent migration plan](workflow/native-subagents.md).
+- Updated: [current state](current.md), [implementation handoff](workflow/implementation-handoff.md), [workflow overview](workflow/overview.md), [index](index.md), [README](../README.md), and [root instructions](../AGENTS.md).
+- Summary: Distinguished the tested Python/process-worker MVP from the intended native parent-child architecture. Prioritized verified native invocation/concurrency/model/lifecycle support, parent-role migration, deterministic helper reuse, and native smoke/full-pilot acceptance tests. Preserved the existing runner as a labeled baseline and unchanged approval boundaries. This task changes documentation only; native delegation and runtime instructions/registrations were not implemented or modified.
+
+## [2026-11-01] docs | Package current workflow for safe project installation
+
+- Sources: User request for reusable GitHub installation and business-specific operation; explicit choice to keep the existing repository private and defer native subagents; 59-test run and isolated wheel/sdist integration checks.
+- Created: [installation quickstart](../INSTALL.md), [distribution design/evidence](workflow/distribution.md), installed agent-guide template, asset build hook/manifest, ownership-aware installer/setup, business-scaffold CLI, installation tests, installed-wheel integration script, and CI configuration.
+- Updated: [README](../README.md), [current state](current.md), [handoff](workflow/implementation-handoff.md), [overview](workflow/overview.md), [native roadmap priority](workflow/native-subagents.md), [index](index.md), root/coordinator instructions, package metadata/resources, and worker workspace selection.
+- Summary: Version 0.2.0 bundles all runtime roles/examples/defaults for wheel/sdist installation outside the source checkout. Setup installs scoped instructions and Chromium without model calls or global permission changes. Host instructions/configuration are preserved and conflicts fail safely. Verified 58 tests passing with one Windows-privilege symlink skip, plus a fresh-venv/fresh-host real-browser delivery flow with test-double model/visual responses. Private origin publication and pinned-tag installation verification follow; client artifacts and credentials remain excluded.

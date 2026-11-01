@@ -4,16 +4,26 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "local-website-workflow"
-version = "0.1.0"
+version = "0.2.0"
 description = "Portable, approval-gated multi-agent static website production"
 requires-python = ">=3.11"
-dependencies = []
+dependencies = ["playwright>=1.50,<2"]
+readme = "README.md"
 
 [project.optional-dependencies]
-qa = ["playwright>=1.50,<2"]
+qa = []  # Backwards-compatible alias; browser automation is now a core dependency.
+
+[project.urls]
+Repository = "https://github.com/jacobg-git/automatic-website-workflow"
 
 [project.scripts]
 website-workflow = "website_workflow.cli:main"
 
 [tool.setuptools.packages.find]
 include = ["website_workflow*"]
+
+[tool.setuptools.cmdclass]
+build_py = "website_workflow.build_assets.BuildAssets"
+
+[tool.setuptools.package-data]
+website_workflow = ["templates/*.md", "_assets/workflow.config.json", "_assets/roles/*/AGENTS.md", "_assets/examples/*.json"]

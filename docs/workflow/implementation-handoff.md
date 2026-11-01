@@ -4,6 +4,8 @@
 
 The user authorized autonomous local implementation with minimal questions. Earlier time-boxed pauses are over; work has resumed. **Never launch a duplicate runner.** Start with [current state](../current.md), the actual project `state.json`/lock/processes, then this page.
 
+**Latest user priority: [installable private-repository distribution](distribution.md) of the current process-worker version first; native subagents later.** Version 0.2.0 now bundles runtime assets and provides safe project setup/business-specific commands. Read [INSTALL.md](../../INSTALL.md) for usage. Native parent-controlled orchestration remains planned, not implemented; neither packaging nor the old pilot proves native delegation.
+
 Approval boundaries remain local-only: no uploads, public deployment, email sending, purchases, DNS changes, or expanded credential use without separate explicit approval.
 
 ## Latest pilot snapshot — 2026-11-01
@@ -64,7 +66,10 @@ This calls real, quota-consuming models.
 
 ## Implemented architecture
 
-- `website_workflow/cli.py`: init, doctor, run, status, qa, serve, sync-agents.
+- `website_workflow/cli.py`: setup, install, new-business, validate-intake, init, doctor, run, status, qa, serve, sync-agents.
+- `installation.py`: ownership-aware, non-destructive host installation and Chromium bootstrap.
+- `build_assets.py` / `MANIFEST.in`: bundle canonical roles/examples/defaults into wheels and sdists; package `templates/PROJECT_GUIDE.md` supplies installed operating instructions.
+- `config.py` / adapter workspace selection: locate bundled assets and launch workers from their actual installed host, not the development checkout.
 - `engine.py`: deterministic stage scheduling, parallel research, evidence/planning artifacts, cache/retries, build/QA corrections, packaging/outreach handoff.
 - `adapters.py`: Antigravity exact-model stdin/NDJSON sessions, session-only permissions, tool-event monitoring, image receipts, time/output/process controls, native registration generation, generic command adapter.
 - `contracts.py`: JSON schemas, supported-vocabulary validator, research/source-reference matching.
@@ -75,7 +80,7 @@ This calls real, quota-consuming models.
 - `.agents/agents/website-*.md`: generated registrations; run `sync-agents` after editing roles.
 - `workflow.config.json`: model routing and limits; `examples/`: intake template and fictional demo.
 
-The conversational coding agent is the user-facing orchestrator. Python is its scheduling/state backend, not another model. Parallel workers are independent native CLI conversations, so exact model slugs can be pinned instead of relying on `flash`/`pro` tier mapping.
+The conversational coding agent is the user-facing coordinator, but **current scheduling is Python-led**. Parallel workers are independent `agy` CLI processes/conversations with exact model slugs; they are not native children launched through `invoke_subagent`. Custom/native role registration alone does not establish parent-child delegation. The next milestone transfers orchestration to the parent agent while retaining deterministic Python helpers.
 
 Interactive Antigravity entry point:
 
@@ -83,7 +88,7 @@ Interactive Antigravity entry point:
 agy --agent website-orchestrator --model gemini-4-argon-medium --sandbox --settings '{"toolPermission":"request-review"}'
 ```
 
-The coordinator persona is primary-only and instructs the agent to use the backend rather than launch duplicate native workers. Registration and instruction synchronization are statically tested; a full interactive coordinator session is not yet tested.
+The existing coordinator persona is primary-only and currently instructs the agent to use the Python scheduler; its registration does not expose `invoke_subagent`. It has not yet been migrated to the target native-parent role. Registration/instruction synchronization tests do not prove native orchestration.
 
 ## Proven runtime details
 
@@ -112,7 +117,7 @@ A separate earlier Flash smoke read a test image, identified `VISUAL CHECKPOINT 
 
 ## Validation
 
-**39 automated tests pass**, with real Chromium tests executed (no skips in this environment). Coverage includes a complete engine run with real Chromium and test-double models, interaction success/failure, network blocking, exact lowercase SiteGround entry filename, non-portable Windows paths, missing/wrong image receipts, large-source compact handoffs, cache migration, next-day resume, bounded retries/budgets, lock behavior, and package/site tampering.
+The original 39-test workflow suite passed with real Chromium. Distribution expands the current suite to **59 tests: 58 passing and one privileged real-symlink test skipped on Windows**, with a separate simulated link-guard case passing. Isolated wheel/sdist installation and a fresh-host real-browser pipeline with test-double models also passed; see [distribution evidence](distribution.md). Coverage includes a complete engine run with real Chromium and test-double models, interaction success/failure, network blocking, exact lowercase SiteGround entry filename, non-portable Windows paths, missing/wrong image receipts, large-source compact handoffs, cache migration, next-day resume, bounded retries/budgets, lock behavior, and package/site tampering.
 
 ```bash
 python -m unittest discover -s tests -v
@@ -127,11 +132,15 @@ Generated projects, prompts, screenshots, model traces, caches, and package meta
 
 ## Priority remaining work
 
-### Live milestone completed
+### First: finish private distribution verification, then native migration
+
+The user deferred native work until after the current version is reusable from GitHub. Verify the private `v0.2.0` installation and CI per [distribution details](distribution.md), then follow [the native migration plan](native-subagents.md) before further scheduler features or broader runtime wrappers. Verify native tools/model selection, update canonical/generated parent instructions and permissions, expose deterministic helpers, record native child IDs/results, then run concurrent child smoke tests and a complete parent-led fictional pilot. Preserve the existing working process mode and its evidence as a labeled baseline, not as native acceptance evidence.
+
+### Existing process-based live milestone completed
 
 The first full real-model/local-browser pipeline, two correction cycles, final image receipts, ZIP verification, unsent outreach artifact, no-inference completed rerun, and real-artifact tamper checks all passed. `awaiting_approval` is a local handoff, never approval to upload/send.
 
-Next, review the demo locally and harden the research/reliability issues below before selecting a real-business pilot. Existing generated projects remain Git-ignored; preserve them locally.
+The next implementation step is native migration above; the research/reliability issues below remain required before a real-business pilot. Existing generated projects remain Git-ignored; preserve them locally.
 
 ### Reliability and research hardening
 
@@ -141,7 +150,7 @@ Next, review the demo locally and harden the research/reliability issues below b
 - Token cap is pre-launch/post-response accounting, **not** a provider billing hard cap. In-flight/failed/unreported calls can exceed it.
 - Current QA is a Chromium baseline, not full accessibility/contrast/Lighthouse/performance scoring/cross-browser coverage. Screenshots currently include keyboard-focused baseline state; avoid confusing QA-induced focus with default-load layout.
 - Consider viewport/section image crops for long pages; full-page mobile screenshots can be difficult to inspect after image downscaling.
-- Test complete interactive coordinator operation and editable/package resource handling.
+- Test complete interactive coordinator operation. Wheel/sdist resource handling and installed-host discovery are now covered by the distribution validation; retain those checks during native migration.
 
 ### Portability
 

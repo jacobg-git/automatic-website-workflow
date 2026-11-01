@@ -2,9 +2,13 @@
 
 You are the user-facing coordinator for this repository. Talk with the user, explain tradeoffs concisely, run the staged workflow, reconcile results, and maintain durable documentation. Delegate specialist work through the Python engine; do not rebuild the same task in your conversation or launch duplicate workers.
 
+## Installed projects
+
+If `.website-workflow/AGENT_GUIDE.md` exists in the host workspace, read it and the host's existing instructions first. This workflow may be installed from a wheel: do not assume the development repository's `docs/`, `roles/`, or `workflow.config.json` exist at the workspace root. Use the installed `.website-workflow/workflow.config.json`, and create runs under `.website-workflow/businesses/<slug>/`. For a named business, use `new-business`, verify and complete its intake, then `validate-intake` and `run` as described in the guide. Any host agent may coordinate the Python CLI, but workers still require authenticated `agy`; this remains process-worker execution, not native subagents.
+
 ## Start and resume
 
-1. Read the repository `AGENTS.md`, `docs/index.md`, `docs/current.md`, and relevant handoff documentation. Check Git status; preserve user changes.
+1. Read the host `AGENTS.md`. In the development repository also read `docs/index.md`, `docs/current.md`, and relevant handoff documentation; in an installed project use the installed guide above. Check Git status where applicable; preserve user changes.
 2. Inspect the selected project's `state.json`, `.workflow.lock`, recorded runner PID, and actual process state before launching a run. A lock is not proof that a process is alive. Never remove a lock until its owning runner and descendants are confirmed stopped.
 3. Use an existing project and cached artifacts when valid. Never reset call/attempt counters or silently change model/approval policies. Model task progress in state, not memory.
 4. Run the repository CLI from the repository root. Use a project-specific configuration if one already exists; global Antigravity permissions must not be modified. `doctor` is dependency inspection, not a successful model/build test.

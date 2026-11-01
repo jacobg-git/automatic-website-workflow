@@ -1,100 +1,107 @@
-# Local website workflow
+# Automatic website workflow
 
-A portable, local-only agent workflow for researching a business, planning and building a static SiteGround-ready website, testing it, and drafting outreach. **The first live Antigravity demo passes end to end locally.** Further research/reliability hardening and native Pi/Codex wrappers remain; see the [continuation handoff](docs/workflow/implementation-handoff.md).
+An installable, local-only workflow for researching a business, planning and building a static SiteGround website, testing it, and drafting outreach.
 
-## Current capabilities
+**Current execution:** Python launches independent Antigravity `agy` worker conversations. These are **not native parent/child subagents**. Native subagents are deferred until after distribution of this working version.
 
-- Python orchestration with concurrent, isolated Antigravity worker conversations and exact model selection.
-- Portable role instructions in `roles/*/AGENTS.md`; generated Antigravity registrations in `.agents/agents/`.
-- JSON task/result validation, durable checkpoints, two attempts per task, bounded calls/time/output, and resume protection.
-- Workers return data and file contents; only the orchestrator writes project artifacts and shared state/docs.
-- Static HTML/CSS/JS validation and real Playwright Chromium screenshots/functionality checks at 390, 768, and 1440px.
-- Independent vision-review stage with successful image-view tool receipts and screenshot-hash checks, correction loops, ZIP packaging, SiteGround handoff, and outreach draft.
-- Compact reviewer/revision briefs use readable page copy and source paths rather than repeatedly embedding full code bundles.
-- No upload, publishing, purchase, domain, or email-sending commands.
+**Repository visibility:** private. Installing agents need authenticated Git access to `jacobg-git/automatic-website-workflow`; model authentication is separate.
 
-**Verified:** a fictional pilot completed real parallel research, Argon planning/building, two correction cycles, receipt-backed visual review, static packaging, and an unsent outreach draft. A repeated completed run made no new model calls. **39 automated tests pass.** This is not a guarantee of factual, legal, accessibility, or production readiness for arbitrary real businesses.
+## Install into a new project
 
-## Requirements
+**Agents: read [INSTALL.md](INSTALL.md) first.** It contains Windows/macOS/Linux commands, private-repository authentication requirements, safe setup, and the exact business-run procedure.
 
-Python 3.11+, authenticated `agy`, and Playwright with Chromium. Run commands from this repository (or use an editable install; a standalone wheel is not currently supported because role/config resources live in the repository).
+From a target project, using its Python 3.11+ virtual environment:
 
 ```bash
-python -m pip install -e ".[qa]"
-python -m playwright install chromium
-python -m website_workflow sync-agents
-python -m website_workflow doctor
-python -m unittest discover -s tests -v
+python -m pip install "local-website-workflow @ git+https://github.com/jacobg-git/automatic-website-workflow.git@v0.2.0"
+python -m website_workflow setup --project .
+python -m website_workflow doctor --project .
 ```
 
-`doctor` makes no model calls and does not change global Antigravity settings. Worker sessions use explicit session-only deny rules, never `--dangerously-skip-permissions`.
+Pip installs Python dependencies, including Playwright. `setup` installs project-local instructions/registrations and downloads Chromium. It does not install Python/Git, authenticate a proprietary agent account, collect credentials, or make model calls. Check `agy models` separately for account access/model availability. Linux may need approved browser system libraries.
 
-## Conversational orchestrator
+Setup preserves existing `AGENTS.md` content, appending one marked pointer to `.website-workflow/AGENT_GUIDE.md`. It does not replace your README or unrelated agents. Ownership hashes protect edited managed files; configuration edits survive reinstall. Use `--dry-run` to preview setup without writes/downloads.
 
-To coordinate the workflow from Antigravity interactively:
+## Tell your agent
+
+> Install this workflow from the private repository `jacobg-git/automatic-website-workflow` using `INSTALL.md`, without replacing this project's existing instructions. Read the installed guide and run the workflow for **BUSINESS NAME in LOCATION**. Verify the business, existing web presence, facts, and CTA first. Stop before uploading, publishing, or sending anything.
+
+Any coding agent can operate the CLI, but worker execution currently requires authenticated **Antigravity**. Native Pi/Codex worker adapters are not implemented.
+
+## Start a business run
 
 ```bash
-agy --agent website-orchestrator --model gemini-4-argon-medium --sandbox --settings '{"toolPermission":"request-review"}'
+python -m website_workflow new-business --project . --name "Business Name" --location "City, Region"
 ```
 
-Its canonical instructions live in `roles/orchestrator/AGENTS.md`. It talks with you, uses the Python backend for scheduling/checkpoints, and maintains documentation. It does not launch duplicate native workers for engine-managed tasks. The launch command explicitly requests session-only permission review and sandboxing rather than relying on potentially permissive inherited defaults; no global auto-approval setting is changed. The registration is generated and statically tested; a complete interactive orchestrator session has not yet been tested.
-
-## Fictional pilot
+This creates an unverified intake under `.website-workflow/businesses/business-name/`. Your operating agent follows `.website-workflow/AGENT_GUIDE.md` to establish identity, public sources, verified facts, and a useful verified CTA. It must not invent missing details or set verification flags just to pass validation.
 
 ```bash
-python -m website_workflow init --project projects/my-demo --demo
-python -m website_workflow run --project projects/my-demo
-python -m website_workflow status --project projects/my-demo
-python -m website_workflow serve --project projects/my-demo
+python -m website_workflow validate-intake --intake .website-workflow/businesses/business-name/intake.json
+python -m website_workflow run --project .website-workflow/businesses/business-name
+python -m website_workflow status --project .website-workflow/businesses/business-name
+python -m website_workflow serve --project .website-workflow/businesses/business-name
 ```
 
-The demo deliberately represents no real business. Running it calls paid/quota-consuming models. Read `workflow.config.json` before running. Default routing uses Flash Low for research/outreach, Argon Medium for planning/review, and Argon High for building.
+Local configuration is discovered automatically at `.website-workflow/workflow.config.json`. Installed projects default to a 600-second task timeout. Model runs consume quota; structural intake validation is not independent factual verification.
 
-## Real business
+## What runs
 
-Copy `examples/intake-template.json` outside the examples folder, replace the fields with verified information, provide a real useful CTA, and set `primary_cta.verified` to true only after checking it. Source URLs and optional competitor URLs must be public HTTP(S). Intake facts are operator assertions, not independently verified facts. Do not put credentials in intake.
+1. **Parallel research:** Flash Low workers gather business and competitor findings with source references and uncertainties.
+2. **Planning:** Argon Medium specifies purpose, CTA, page structure, copy, visual direction, assets, and acceptance checks.
+3. **Building:** Argon High returns self-contained HTML/CSS/JS/original SVG assets. Python validates and writes them.
+4. **Browser QA:** real Chromium at 390/768/1440px checks functionality, missing resources, errors, overflow, and captures screenshots.
+5. **Independent visual review:** Argon Medium must actually open each required image. Successful image-view events and matching PNG hashes are required; self-reports are insufficient.
+6. **Bounded corrections:** findings go back to Argon, followed by fresh QA/review.
+7. **Local handoff:** a static ZIP, SiteGround instructions, QA evidence, and an unsent Flash-written outreach draft. The terminal state is `awaiting_approval`, not deployed.
 
-```bash
-python -m website_workflow init --project projects/business-slug --intake path/to/intake.json
-python -m website_workflow run --project projects/business-slug
-```
-
-Resume with the same `run` command. Changing intake, model routing, adapter, or QA policy requires a new project. Modified site files and modified cached results are not silently overwritten or trusted. If a crashed process leaves `.workflow.lock`, confirm the process and all its workers are stopped before removing it.
+The conversational coordinator and Python backend own shared docs/state; workers return assigned artifacts. Canonical roles are in `roles/*/AGENTS.md`, with generated Antigravity registrations. Project installation includes versioned role snapshots and a primary-only coordinator persona. The coordinator persona still uses the process scheduler, not `invoke_subagent`.
 
 ## Outputs
 
 ```text
-projects/<business>/
-  intake.json
-  state.json
-  tasks/<task>/result.json          # validated outputs, per-attempt traces
-  research/*.md                    # source-backed reports and evidence ledger
+.website-workflow/businesses/<slug>/
+  intake.json, state.json
+  tasks/<task>/result.json            # validated results and per-attempt traces
+  research/*.md                      # reports and evidence ledger
   plan/website-brief.md
   plan/asset-provenance.md
-  site/                            # generated static files
-  qa/                              # audits and screenshot sets
-  outreach/draft.md                 # never sent
-  delivery/siteground-static.zip   # created only after release gates pass
+  site/                              # plain static files
+  qa/                                # audits, image evidence, screenshots
+  outreach/draft.md                   # never sent
+  delivery/siteground-static.zip     # only after release gates pass
   delivery/SITEGROUND.md
-  docs/progress.md
-  docs/handoff.md
+  docs/progress.md, docs/handoff.md
 ```
 
-Generated projects are Git-ignored because traces can contain business/contact information. Keep local backups if needed. A future clone will not contain your local pilot state.
+The installer adds a Git-ignore rule for business outputs because traces may contain client/contact information. Keep separate backups. Package instructions/configuration can be committed; generated clients, credentials, and `.env` must not be committed accidentally.
 
-The successful terminal status is `awaiting_approval`, never deployed. The outreach preview/sender placeholders are intentional and must be replaced only after appropriate approvals. Draft HTML stays `noindex`. Local success does not certify legal compliance, licensing, accessibility, or factual accuracy.
+Resume using the same `run` command. Do not launch duplicates, reset attempt/call counters, or remove locks before confirming processes stopped. Modified site/result/package hashes are not silently trusted or overwritten. Changed intake/models/instructions can require a new run directory; retain an older package environment for in-flight work when upgrading.
 
-## Portability
+## Safety and limitations
 
-The workflow contracts and roles are runtime-independent. The tested native adapter is Antigravity. A generic `command` adapter executes an argv array without a shell, sends the task prompt on stdin, and expects JSON on stdout (or a configurable envelope field). This can host wrappers for other agents; **Pi/Codex-specific integrations have not been implemented or tested**. See [implementation details and handoff](docs/workflow/implementation-handoff.md).
+- No upload, publish, purchase, DNS/domain, or email-sending commands. Separate explicit approval is required for those actions.
+- Draft HTML stays noindex. Preview/sender placeholders and internal notes must be reviewed before any approved outreach.
+- Plain static output only: no application server, contact backend, remote runtime dependencies, or analytics included.
+- Research must respect source restrictions, uncertainty, identity conflicts, privacy, and asset rights. Empty search results do not prove nonexistence or registration status.
+- Token budgets are accounting/pre-launch limits, not provider billing caps; failed/in-flight work may consume unreported quota.
+- The sandbox/tool policies are safeguards, not a security guarantee for arbitrary agent code. No global auto-approval settings are changed.
+- Chromium checks are not complete WCAG/contrast/Lighthouse/cross-browser certification. Missing browser/image evidence blocks delivery.
+- Native subagents, deeper research corroboration, and additional recovery/QA hardening remain future work. See [native migration plan](docs/workflow/native-subagents.md).
 
-## Safety and practical limits
+## Proven baseline and development
 
-- Plain static files only; no application server, build dependency, contact form backend, analytics, or remote runtime assets.
-- Research websites are untrusted data. Do not bypass access restrictions or reuse unlicensed assets.
-- The runner has no credentials or external-action integrations, but agent CLI access is not a security sandbox for arbitrary code. Review session permissions and runtime behavior before using sensitive environments.
-- Token limits are post-response accounting/pre-launch checks, not a hard provider billing cap; in-flight work and failed/unreported calls can consume extra quota.
-- Playwright blocks non-local requests during QA and does not activate contact links or submit forms.
-- Stop on missing browser/vision capability, exhausted budget, incomplete evidence, or failed release gates rather than claiming success.
+The earlier fictional pilot completed real parallel research, Argon planning/building, two correction cycles, receipt-backed visual review, ZIP packaging, and outreach drafting. Its completed rerun made no model calls. This is not a production guarantee for arbitrary real clients.
 
-Start with [docs/index.md](docs/index.md).
+Source development:
+
+```bash
+python -m pip install -e .
+python -m website_workflow sync-agents
+python -m unittest discover -s tests -v
+python -m pip wheel --no-deps --wheel-dir dist .
+```
+
+Wheels bundle canonical roles, examples, default configuration, and the project guide; they do not depend on this source checkout at runtime. `scripts/check_installed.py` runs with an installed wheel (`python -I scripts/check_installed.py`) and exercises a fresh host, real Chromium, packaging, and cached verification with explicitly simulated model/visual responses and zero inference. CI is configured to build and test on Linux/Windows with Python 3.11/3.13; check the actual run status before claiming a remote pass.
+
+Source-checkout legacy runs under `projects/` remain supported and Git-ignored. See [documentation index](docs/index.md) and [implementation handoff](docs/workflow/implementation-handoff.md).

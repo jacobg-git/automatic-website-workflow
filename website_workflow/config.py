@@ -11,8 +11,32 @@ ROOT = Path(__file__).resolve().parent.parent
 ROLES = ("researchers", "planner", "builder", "reviewer", "outreach")
 
 
+def resource_path(relative):
+    """Locate wheel-bundled assets, or canonical assets in a source checkout."""
+    assets = Path(__file__).resolve().parent / "_assets"
+    path = assets / relative if assets.is_dir() else ROOT / relative
+    if not path.is_file():
+        raise WorkflowError(f"Required workflow asset missing: {relative}. Reinstall the package.")
+    return path
+
+
+def find_workspace(project=None):
+    start = Path(project or Path.cwd()).resolve()
+    for parent in (start, *start.parents):
+        if (parent / ".website-workflow" / "installation.json").is_file():
+            return parent
+        if (parent / "workflow.config.json").is_file() and (parent / ".agents" / "agents" / "website-builder.md").is_file():
+            return parent
+    return start
+
+
+def default_config_path(workspace=None):
+    installed = Path(workspace or Path.cwd()) / ".website-workflow" / "workflow.config.json"
+    return installed if installed.is_file() else resource_path("workflow.config.json")
+
+
 def load_config(path=None):
-    config = read_json(path or ROOT / "workflow.config.json")
+    config = read_json(path or default_config_path())
     if config.get("adapter") not in ("antigravity", "command", "fixture"):
         raise WorkflowError("adapter must be antigravity, command, or fixture")
     for key, low, high in (("concurrency", 1, 8), ("max_competitors", 0, 5),

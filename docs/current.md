@@ -1,52 +1,43 @@
 # Current Project State
 
-## Status
+## Current Priority and Status
 
-**First full live local demo completed and independently reviewed.** `projects/live-demo-001/state.json` is `awaiting_approval`. No runner/worker is left active, the lock is released, and nothing was uploaded, published, or sent.
+The user requested a reusable GitHub-installable version of the **current process-worker workflow**, explicitly deferred native subagents, and chose to **keep the existing repository private**: `jacobg-git/automatic-website-workflow`.
 
-This proves the Antigravity local pipeline, not production readiness for arbitrary real clients or native Pi/Codex integration.
+Version **0.2.0** packages the workflow for installation in new projects. Read [INSTALL.md](../INSTALL.md) for the agent-facing install/run procedure and [distribution details](workflow/distribution.md) for implementation and evidence. Native parent/child delegation is still unimplemented; the [migration plan](workflow/native-subagents.md) follows distribution.
 
-## Confirmed Direction
+## Implemented Distribution
 
-- Static SiteGround websites: parallel research → planning → Argon build → browser/visual QA and fixes → ZIP and unsent outreach draft.
-- The conversational orchestrator uses Python for scheduling/checkpoints. Workers return artifacts; only the orchestrator/backend maintain shared docs/state.
-- Separate explicit approval remains required for uploads, publication, sending, purchases, domain changes, or expanded credential use.
+- Standard wheel/sdist includes canonical roles, default configuration, examples, and the installed operating guide; runtime does not depend on this source checkout.
+- Pip installs Playwright; `setup --project ROOT` installs project-local instructions/registrations and downloads Chromium using the selected Python environment.
+- Ownership-aware installer preserves host instructions, unrelated agents, README, custom configuration, and CRLF/BOM bytes outside owned blocks. Conflicts/links/active-run locks stop installation instead of overwriting.
+- Installed resources live under `.website-workflow/`, registrations under `.agents/agents/`, and private business outputs under Git-ignored `.website-workflow/businesses/`.
+- `new-business` scaffolds an unverified intake for a specific name/location; the operating agent verifies identity/facts/CTA before `validate-intake` and `run`. It must not invent missing facts or bypass verification flags.
+- Worker processes now run from the actual host workspace rather than the development repository/site-packages.
+- Prerequisites not supplied by the repo: Python/Git, private GitHub read access, authenticated Antigravity CLI/model entitlement/quota, and any privileged Linux browser system libraries. No credentials are collected or global agent permissions changed.
 
-## Implemented / Verified
+## Validation
 
-- Validated intake/contracts, concurrent exact-model workers, date-stable cache/resume, bounded retries, hash integrity, browser/visual correction loop, packaging and outreach stages.
-- Canonical portable roles and native registrations, including primary-only `website-orchestrator`. A full interactive coordinator session remains untested; its registration/instruction synchronization is tested.
-- **39 automated tests pass**, including real Chromium integration, working/broken interactions, external-request blocking, image receipts, compact large-source handoffs, next-day resume, and SiteGround/Windows filename portability.
-- Image inspection requires successful native `view_file` receipts and matching PNG hashes; model self-reports alone cannot pass release.
-- Compact review/revision briefs use readable copy and source references instead of repeating whole code bundles.
-- Dependency inspection, compilation, documentation-link checks, and whitespace checks pass. Global runtime permissions were not changed.
+- **59 tests executed: 58 passed, one real-symlink case skipped on Windows due to missing privileges.** A simulated link-guard test passes; CI can exercise the real case on Linux.
+- Built wheel and sdist, including a wheel rebuilt from sdist.
+- Installed into a fresh virtual environment outside the checkout, with dependencies resolved independently (Playwright 1.64.1 / Chromium 156.0.8078.4).
+- Isolated installed-wheel test preserved host instructions, ran setup/doctor and business scaffolding, then completed real Chromium screenshots, ZIP packaging, and a no-inference completed rerun using explicitly simulated model/visual results. No new paid inference was used for distribution validation.
+- GitHub Actions is configured for Linux/Windows and Python 3.11/3.13; inspect remote run status before claiming CI success.
 
-## Live Demo Results — 2026-11-01
+## Existing Live Baseline
 
-Project: `projects/live-demo-001/` (Git-ignored fictional bicycle workshop).
+The earlier fictional pilot at `projects/live-demo-001/` completed real parallel Flash research, Argon planning/building, two correction cycles, native image-view receipts, static packaging, and an unsent email draft. It remains `awaiting_approval`, with no active worker or lock at its last verification. Its 12 started calls reported 423,411 successful-task tokens, excluding interrupted work and separate smoke tests.
 
-- Flash Low researched the business concept and two competitors concurrently; Argon Medium planned; Argon High built and performed two correction cycles.
-- Real Chromium checks passed at 390/768/1440px, including mobile navigation and service tabs. Final Argon Medium review opened all five final screenshots and returned **pass with no issues**.
-- Independent targeted checks verified tab contrast (minimum sampled ratio 7.57:1), stacked mobile labels, no skip-focus layout shift or disclosure-text overlap, menu click after keyboard focus, Escape/focus return, and tab keyboard behavior. These are targeted checks, not full WCAG certification.
-- ZIP contents/CRC/hashes match the reviewed four-file static source manifest, with exact `index.html` at archive root.
-- A second completed run used no new inference (call counter stayed 12). Temporary-copy tests rejected both site and ZIP tampering without overwriting edits or calling models.
-- Reported successful-task tokens: 423,411. Usage is incomplete because interrupted generations and separate smoke tests are additional/unknown. Token limits are not billing hard caps.
-
-## Local Deliverables
-
-- Site: `projects/live-demo-001/site/`
-- ZIP: `projects/live-demo-001/delivery/siteground-static.zip`
-- QA: `projects/live-demo-001/qa/latest.md`, `qa/cycle-2.json`, and five final screenshots under `qa/cycle-2/`
-- Additional checks: `projects/live-demo-001/qa/targeted-regressions.json`
-- Unsent email draft: `projects/live-demo-001/outreach/draft.md` (preview/sender placeholders and an internal sender note still require editing before sending)
-- Handoff: `projects/live-demo-001/docs/handoff.md`
+This baseline uses independent `agy` processes, **not native subagents**. Nothing was uploaded, published as a client website, or sent. Generated projects/traces/ZIPs are local and Git-ignored, not part of the reusable repository.
 
 ## Next Steps
 
-1. Present/review the fictional demo locally; do not upload or send it without explicit approval.
-2. Before a real-business pilot, harden source corroboration/conflict handling. Empty search results do not prove business nonexistence or registration status; the demo researcher overclaimed this despite the intake explicitly being fictional.
-3. Add graceful pause/cancel, transactional site application, and clearer provider-cost accounting.
-4. Improve long-page screenshot crops and broader accessibility/performance/cross-browser coverage.
-5. Implement/test native Pi/Codex wrappers and their image receipts; the generic adapter does not yet supply a trusted visual-evidence channel.
+1. Publish/verify the reviewed source and pinned `v0.2.0` distribution in the existing private origin; do not change visibility or include client data.
+2. Verify authenticated installation from that GitHub tag in a fresh environment and inspect CI status.
+3. Then return to [native subagent migration](workflow/native-subagents.md), preserving deterministic helpers, receipts, budgets, and approval gates.
+4. Before real-client production, strengthen source corroboration/conflict/negative-claim handling. Empty search results are not proof of nonexistence or registration status.
+5. Additional reliability/QA work remains: graceful pause/cancel, transactional site writes, clearer cost accounting, long-page crops, broader accessibility/performance/cross-browser tests, and actual Pi/Codex worker integrations.
 
-See [implementation handoff](workflow/implementation-handoff.md) for commands, runtime details, and remaining gaps. Commit scope is the tested Antigravity MVP, with the remaining hardening work explicitly tracked above. Generated project artifacts are local-only and Git-ignored.
+## Approval Boundary
+
+The workflow stops locally. Client preview uploads, public deployment, email sending, purchases, domain changes, and expanded credential use require separate approval. Publishing the reusable workflow source privately to GitHub is distinct from publishing client websites. Passed tests/fictional pilots are not factual, legal, licensing, full accessibility, or production guarantees.

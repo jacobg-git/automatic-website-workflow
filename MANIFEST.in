@@ -1,0 +1,7 @@
+include workflow.config.json
+include INSTALL.md
+recursive-include roles AGENTS.md
+recursive-include examples *.json
+recursive-include website_workflow/templates *.md
+prune projects
+prune tests

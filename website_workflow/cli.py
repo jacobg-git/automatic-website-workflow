@@ -1,27 +1,41 @@
 from __future__ import annotations
 
 import argparse
+import importlib.metadata
 import json
 import shutil
 import sys
 import threading
 from pathlib import Path
 
+from . import __version__
 from .adapters import sync_agents
-from .config import ROOT, load_config, validate_intake
+from .config import default_config_path, find_workspace, load_config, resource_path, validate_intake
 from .contracts import WorkflowError
 from .engine import Engine
+from .installation import install_project, new_business, setup_project
 from .quality import browser_audit, serve, static_audit
 from .storage import read_json, write_json, write_text
 
 
-def doctor(config):
-    findings = {"python": sys.version.split()[0], "adapter": config["adapter"],
+def doctor(config, workspace=None):
+    workspace = Path(workspace or Path.cwd()).resolve()
+    findings = {"package_version": __version__, "python": sys.version.split()[0], "workspace": str(workspace),
+                "adapter": config["adapter"], "execution_mode": "process-workers, not native subagents",
                 "external_actions": "not implemented: upload / publish / send",
-                "roles": {role: (ROOT / "roles" / role / "AGENTS.md").exists() for role in config["models"]}}
+                "roles": {role: resource_path(f"roles/{role}/AGENTS.md").is_file() for role in config["models"]},
+                "account": "Authentication, selected-model access, and quota require a separate agy models/live check; no credentials are collected"}
+    try:
+        findings["playwright"] = importlib.metadata.version("playwright")
+    except importlib.metadata.PackageNotFoundError:
+        findings["playwright"] = None
     if config["adapter"] == "antigravity":
         findings["executable"] = shutil.which(config.get("executable", "agy"))
-        findings["agent_registrations"] = all((ROOT / ".agents" / "agents" / f"website-{role}.md").exists() for role in config["models"])
+        findings["agent_registrations"] = all((workspace / ".agents" / "agents" / f"website-{role}.md").is_file() for role in (*config["models"], "orchestrator"))
+        if not findings["executable"]:
+            findings["runtime_setup"] = "Install/authenticate Antigravity CLI using https://antigravity.google/docs/cli/using/ ; then run agy models"
+        if not findings["agent_registrations"]:
+            findings["project_setup"] = "Run website-workflow setup --project <workspace>"
     try:
         from playwright.sync_api import sync_playwright
         with sync_playwright() as pw:
@@ -30,17 +44,31 @@ def doctor(config):
             browser.close()
     except Exception as exc:
         findings["browser_error"] = str(exc)
+        findings["browser_setup"] = "Run website-workflow setup --project <workspace>. Linux may also need approved system libraries: python -m playwright install-deps chromium"
     print(json.dumps(findings, indent=2))
     return 1 if findings.get("browser_error") or (config["adapter"] == "antigravity" and (not findings.get("executable") or not findings.get("agent_registrations"))) else 0
 
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description="Local-only static website workflow. No upload, publish, or send commands exist.")
-    parser.add_argument("--config", type=Path, help="Configuration JSON (default: repository workflow.config.json)")
+    parser.add_argument("--version", action="version", version=f"local-website-workflow {__version__}")
+    parser.add_argument("--config", type=Path, help="Configuration JSON (default: installed project config, otherwise package defaults)")
     commands = parser.add_subparsers(dest="command", required=True)
-    commands.add_parser("doctor", help="Inspect local dependencies; does not call a model")
-    commands.add_parser("sync-agents", help="Regenerate Antigravity registrations from canonical role instructions")
-    init = commands.add_parser("init", help="Create a project intake; existing files are not overwritten")
+    for name in ("doctor", "sync-agents"):
+        sub = commands.add_parser(name)
+        sub.add_argument("--project", type=Path, default=Path.cwd(), help="Host workspace (default: current directory)")
+    for name in ("install", "setup"):
+        sub = commands.add_parser(name, help="Install project instructions" + (" and download Chromium" if name == "setup" else " without downloads"))
+        sub.add_argument("--project", type=Path, required=True)
+        sub.add_argument("--dry-run", action="store_true")
+    new = commands.add_parser("new-business", help="Create a business-specific draft intake, without inference")
+    new.add_argument("--project", type=Path, required=True, help="Installed host workspace")
+    new.add_argument("--name", required=True)
+    new.add_argument("--location", required=True)
+    new.add_argument("--slug")
+    check = commands.add_parser("validate-intake", help="Validate facts/CTA structure before model calls")
+    check.add_argument("--intake", type=Path, required=True)
+    init = commands.add_parser("init", help="Create a business run from verified intake or fictional demo; never overwrites")
     init.add_argument("--project", required=True, type=Path)
     choice = init.add_mutually_exclusive_group(required=True)
     choice.add_argument("--intake", type=Path)
@@ -50,15 +78,31 @@ def main(argv=None):
         sub.add_argument("--project", required=True, type=Path)
     args = parser.parse_args(argv)
     try:
+        if args.command in ("install", "setup"):
+            operation = setup_project if args.command == "setup" else install_project
+            print(json.dumps(operation(args.project, dry_run=args.dry_run), indent=2))
+            return 0
+        if args.command == "new-business":
+            print(json.dumps(new_business(args.project, args.name, args.location, args.slug), indent=2))
+            return 0
+        if args.command == "validate-intake":
+            value = validate_intake(read_json(args.intake))
+            print(json.dumps({"status": "valid", "business": value["business_name"], "model_calls": 0,
+                              "note": "Structural validation does not independently verify factual truth"}, indent=2))
+            return 0
         if args.command == "sync-agents":
-            for path in sync_agents():
-                print(path.relative_to(ROOT))
+            # Installed projects use ownership-aware updates, not blind regeneration.
+            if (args.project / ".website-workflow" / "installation.json").exists():
+                print(json.dumps(install_project(args.project), indent=2))
+            else:
+                for path in sync_agents(args.project):
+                    print(path)
             return 0
         if args.command == "init":
             project = args.project.resolve()
             if project.exists() and any(project.iterdir()):
                 raise WorkflowError("Project directory is not empty; refusing to overwrite")
-            source = ROOT / "examples" / "demo-intake.json" if args.demo else args.intake
+            source = resource_path("examples/demo-intake.json") if args.demo else args.intake
             intake = validate_intake(read_json(source))
             project.mkdir(parents=True, exist_ok=True)
             write_json(project / "intake.json", intake)
@@ -74,9 +118,10 @@ def main(argv=None):
                 print(f"Local preview: {origin} (Ctrl+C to stop)", flush=True)
                 threading.Event().wait()
             return 0
-        config = load_config(args.config)
+        workspace = find_workspace(args.project)
+        config = load_config(args.config or default_config_path(workspace))
         if args.command == "doctor":
-            return doctor(config)
+            return doctor(config, workspace)
         if args.command == "qa":
             plan = read_json(args.project / "tasks" / "plan" / "result.json")
             static = static_audit(args.project / "site", plan)
